@@ -62,6 +62,12 @@ export default function GalleryClient({
     return () => window.removeEventListener("keydown", handleKey);
   }, [active, closeModal]);
 
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
   return (
     <>
       {/* Hero */}
