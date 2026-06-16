@@ -122,15 +122,6 @@ export default function AboutPage() {
                   priority
                 />
               </div>
-              <div className="absolute bottom-[-22px] left-[-18px] w-[46%] rounded-[13px] overflow-hidden border-[3px] border-cream shadow-[0_18px_34px_-14px_rgba(22,19,15,0.5)]">
-                <Image
-                  src="/gallery/basements/60918419028__025A1461-9DE9-4E0C-AA15-D0679FB06743.JPG"
-                  alt="On the job — foundation work in Connecticut"
-                  width={400}
-                  height={300}
-                  className="w-full aspect-[4/3] object-cover block"
-                />
-              </div>
               <div className="absolute top-[-14px] right-[-12px] bg-dark text-white rounded-xl py-3 px-[15px] shadow-[0_16px_30px_-12px_rgba(22,19,15,0.6)] text-center">
                 <div className="font-heading font-semibold text-[10.5px] tracking-[1.6px] uppercase text-utility-text">
                   CT Licensed
