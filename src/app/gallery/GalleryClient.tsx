@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Lightbox from "@/components/Lightbox";
 import {
   categoryLabels,
   type GalleryCategory,
@@ -221,6 +222,7 @@ function ProjectModal({
     ...(p.gallery ?? []).map((src) => ({ src, isDrive: false })),
     ...(p.driveImages ?? []).map((img) => ({ src: img.url, isDrive: true })),
   ];
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   return (
     <div
@@ -324,19 +326,20 @@ function ProjectModal({
                 {isDriveOnly ? "Project photos" : "From the job"}
               </div>
               <div className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-2.5 mb-7">
-                {allPhotos.map((photo) => (
-                  <div
+                {allPhotos.map((photo, i) => (
+                  <button
                     key={photo.src}
-                    className="aspect-square rounded-[10px] overflow-hidden border border-border-card"
+                    onClick={() => setLightboxIndex(i)}
+                    className="aspect-square rounded-[10px] overflow-hidden border border-border-card cursor-pointer transition-transform hover:scale-105"
                   >
                     <Image
                       src={photo.src}
-                      alt="Project photo"
+                      alt={`${p.title} photo ${i + 1}`}
                       width={200}
                       height={200}
                       className="w-full h-full object-cover"
                     />
-                  </div>
+                  </button>
                 ))}
               </div>
             </>
@@ -350,6 +353,15 @@ function ProjectModal({
           </Link>
         </div>
       </div>
+      {lightboxIndex !== null && allPhotos.length > 0 && (
+        <Lightbox
+          images={allPhotos.map((photo) => photo.src)}
+          startIndex={lightboxIndex}
+          title={p.title}
+          location={p.location}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
     </div>
   );
 }
