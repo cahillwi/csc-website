@@ -19,6 +19,18 @@ export type GalleryProject = {
   gallery?: string[];
 };
 
+export type DriveImageRef = {
+  id: string;
+  name: string;
+  url: string;
+  thumbnailUrl: string;
+};
+
+export type MergedGalleryProject = GalleryProject & {
+  isDriveGallery?: boolean;
+  driveImages?: DriveImageRef[];
+};
+
 export const categoryLabels: Record<GalleryCategory, string> = {
   basements: "Basements",
   kitchens: "Kitchens",
