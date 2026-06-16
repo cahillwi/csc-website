@@ -45,14 +45,23 @@ export default function GalleryClient({
   const active = projects.find((p) => p.id === openId) ?? null;
 
   const openModal = useCallback((id: string) => {
-    document.body.style.overflow = "hidden";
     setOpenId(id);
   }, []);
 
   const closeModal = useCallback(() => {
-    document.body.style.overflow = "";
     setOpenId(null);
   }, []);
+
+  useEffect(() => {
+    if (active) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [active]);
 
   useEffect(() => {
     if (!active) return;
@@ -63,11 +72,6 @@ export default function GalleryClient({
     return () => window.removeEventListener("keydown", handleKey);
   }, [active, closeModal]);
 
-  useEffect(() => {
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, []);
 
   return (
     <>
