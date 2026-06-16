@@ -112,7 +112,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="animate-csc-fade-delay max-w-[440px] mx-auto relative">
+            <div className="animate-csc-fade-delay w-full max-w-[440px] mx-auto relative">
               <div className="relative aspect-[4/4.4] rounded-[18px] border border-border-card overflow-hidden shadow-[0_30px_60px_-28px_rgba(22,19,15,0.45)]">
                 <Image
                   src="/images/dan_headshot.png"
