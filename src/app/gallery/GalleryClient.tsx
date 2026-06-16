@@ -283,9 +283,11 @@ function ProjectModal({
           )}
 
           {/* Description */}
-          <p className="text-[16.5px] leading-[1.65] text-[#3C352C] mb-[22px] [text-wrap:pretty]">
-            {p.blurb}
-          </p>
+          {p.blurb && (
+            <p className="text-[16.5px] leading-[1.65] text-[#3C352C] mb-[22px] [text-wrap:pretty]">
+              {p.blurb}
+            </p>
+          )}
 
           {/* What we did — only for case study projects */}
           {p.did.length > 0 && (

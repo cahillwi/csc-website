@@ -16,7 +16,15 @@ export type DriveImage = {
   thumbnailUrl: string;
 };
 
-export type DriveGalleryData = Partial<Record<GalleryCategory, DriveImage[]>>;
+export type DriveProject = {
+  folderName: string;
+  title: string;
+  location: string;
+  category: GalleryCategory;
+  images: DriveImage[];
+};
+
+export type DriveGalleryData = DriveProject[];
 
 function getDrive() {
   const apiKey = process.env.GOOGLE_API_KEY;
@@ -32,6 +40,31 @@ function driveThumbnailUrl(fileId: string): string {
   return `https://lh3.googleusercontent.com/d/${fileId}=w400`;
 }
 
+function parseFolderName(name: string): { title: string; location: string } {
+  const parts = name.split(" - ");
+  if (parts.length >= 2) {
+    return {
+      title: parts.slice(0, -1).join(" - ").trim(),
+      location: parts[parts.length - 1].trim(),
+    };
+  }
+  return { title: name.trim(), location: "Connecticut" };
+}
+
+async function listSubfolders(
+  drive: ReturnType<typeof getDrive>,
+  folderId: string
+): Promise<{ id: string; name: string }[]> {
+  const res = await drive.files.list({
+    q: `'${folderId}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
+    fields: "files(id,name)",
+  });
+
+  return (res.data.files ?? []).filter(
+    (f): f is { id: string; name: string } => !!f.id && !!f.name
+  );
+}
+
 async function listImageFiles(
   drive: ReturnType<typeof getDrive>,
   folderId: string
@@ -44,7 +77,10 @@ async function listImageFiles(
   });
 
   return (res.data.files ?? [])
-    .filter((f): f is { id: string; name: string; createdTime?: string | null } => !!f.id && !!f.name)
+    .filter(
+      (f): f is { id: string; name: string; createdTime?: string | null } =>
+        !!f.id && !!f.name
+    )
     .map((f) => ({
       id: f.id,
       name: f.name,
@@ -53,36 +89,53 @@ async function listImageFiles(
     }));
 }
 
-export async function fetchDriveGalleryImages(): Promise<DriveGalleryData> {
+export async function fetchDriveGalleryProjects(): Promise<DriveGalleryData> {
   const folderId = process.env.GOOGLE_DRIVE_GALLERY_FOLDER_ID;
   if (!folderId) throw new Error("GOOGLE_DRIVE_GALLERY_FOLDER_ID not set");
 
   const drive = getDrive();
 
-  const foldersRes = await drive.files.list({
-    q: `'${folderId}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
-    fields: "files(id,name)",
-  });
+  const categoryFolders = await listSubfolders(drive, folderId);
 
-  const folders = (foldersRes.data.files ?? []).filter(
-    (f): f is { id: string; name: string } => !!f.id && !!f.name
-  );
+  const projectsByCategory = await Promise.all(
+    categoryFolders.map(async (catFolder) => {
+      const category = FOLDER_NAME_MAP[catFolder.name.toLowerCase().trim()];
+      if (!category) return [];
 
-  const results = await Promise.all(
-    folders.map(async (folder) => {
-      const category = FOLDER_NAME_MAP[folder.name.toLowerCase().trim()];
-      if (!category) return null;
-      const images = await listImageFiles(drive, folder.id);
-      return { category, images };
+      const projectFolders = await listSubfolders(drive, catFolder.id);
+
+      if (projectFolders.length === 0) {
+        const images = await listImageFiles(drive, catFolder.id);
+        if (images.length === 0) return [];
+        return [
+          {
+            folderName: catFolder.name,
+            title: `${catFolder.name} Projects`,
+            location: "Connecticut",
+            category,
+            images,
+          },
+        ];
+      }
+
+      const projects = await Promise.all(
+        projectFolders.map(async (projFolder) => {
+          const images = await listImageFiles(drive, projFolder.id);
+          if (images.length === 0) return null;
+          const { title, location } = parseFolderName(projFolder.name);
+          return {
+            folderName: projFolder.name,
+            title,
+            location,
+            category,
+            images,
+          };
+        })
+      );
+
+      return projects.filter((p): p is DriveProject => p !== null);
     })
   );
 
-  const data: DriveGalleryData = {};
-  for (const result of results) {
-    if (result && result.images.length > 0) {
-      data[result.category] = result.images;
-    }
-  }
-
-  return data;
+  return projectsByCategory.flat();
 }
