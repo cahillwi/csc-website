@@ -39,8 +39,8 @@ export default function Lightbox({
       if (e.key === "ArrowRight") goNext();
       if (e.key === "ArrowLeft") goPrev();
     };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+    window.addEventListener("keydown", handleKey, true);
+    return () => window.removeEventListener("keydown", handleKey, true);
   }, [onClose, goNext, goPrev]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
