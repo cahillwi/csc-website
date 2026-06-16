@@ -63,7 +63,7 @@ export default function Lightbox({
   return (
     <div
       className="fixed inset-0 z-[130] bg-black/90 backdrop-blur-sm flex flex-col animate-csc-fade"
-      onClick={onClose}
+      onClick={(e) => { e.stopPropagation(); onClose(); }}
     >
       {/* Top bar */}
       <div
