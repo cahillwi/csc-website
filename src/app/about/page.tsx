@@ -76,7 +76,7 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="bg-[radial-gradient(120%_150%_at_82%_0%,#FFFDF8_0%,#FAF6EF_50%,#F3EBDD_100%)] border-b border-border-light">
         <div className="max-w-[1200px] mx-auto px-7 py-[clamp(40px,5.5vw,80px)]">
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-[clamp(30px,5vw,60px)] items-center">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_340px] lg:grid-cols-[1fr_400px] gap-[clamp(30px,5vw,60px)] items-center">
             <div className="animate-csc-fade">
               <div className="inline-flex items-center gap-[9px] bg-white border border-border-header rounded-full py-[7px] px-[15px] mb-5">
                 <span className="w-2 h-2 rounded-full bg-orange" />
@@ -112,7 +112,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="animate-csc-fade-delay max-w-[440px] mx-auto relative">
+            <div className="animate-csc-fade-delay w-full max-w-[440px] mx-auto relative">
               <div className="relative aspect-[4/4.4] rounded-[18px] border border-border-card overflow-hidden shadow-[0_30px_60px_-28px_rgba(22,19,15,0.45)]">
                 <Image
                   src="/images/dan_headshot.png"
@@ -120,15 +120,6 @@ export default function AboutPage() {
                   fill
                   className="object-cover object-[center_28%]"
                   priority
-                />
-              </div>
-              <div className="absolute bottom-[-22px] left-[-18px] w-[46%] rounded-[13px] overflow-hidden border-[3px] border-cream shadow-[0_18px_34px_-14px_rgba(22,19,15,0.5)]">
-                <Image
-                  src="/gallery/basements/60918419028__025A1461-9DE9-4E0C-AA15-D0679FB06743.JPG"
-                  alt="On the job — foundation work in Connecticut"
-                  width={400}
-                  height={300}
-                  className="w-full aspect-[4/3] object-cover block"
                 />
               </div>
               <div className="absolute top-[-14px] right-[-12px] bg-dark text-white rounded-xl py-3 px-[15px] shadow-[0_16px_30px_-12px_rgba(22,19,15,0.6)] text-center">
