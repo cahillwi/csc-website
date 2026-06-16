@@ -403,7 +403,7 @@ export default function HomePage() {
             </Link>
             <a
               href="tel:+18604881427"
-              className="font-heading font-bold text-[19px] tracking-wider uppercase bg-transparent text-white py-4 px-9 rounded-[9px] border-[1.5px] border-[#3A352D] inline-flex items-center gap-2.5 hover:border-orange hover:text-orange transition-all"
+              className="font-heading font-bold text-[19px] tracking-wider uppercase bg-transparent text-white py-4 px-9 rounded-[9px] border-[1.5px] border-[rgba(255,255,255,0.3)] inline-flex items-center gap-2.5 hover:border-orange hover:text-orange transition-all"
             >
               <span>&#9742;</span> (860) 488-1427
             </a>
