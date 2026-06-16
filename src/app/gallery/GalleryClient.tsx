@@ -4,10 +4,9 @@ import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  projects,
   categoryLabels,
   type GalleryCategory,
-  type GalleryProject,
+  type MergedGalleryProject,
 } from "@/data/gallery";
 
 type FilterKey = "all" | GalleryCategory;
@@ -30,7 +29,11 @@ function PlaceholderCover({ label }: { label: string }) {
   );
 }
 
-export default function GalleryClient() {
+export default function GalleryClient({
+  projects,
+}: {
+  projects: MergedGalleryProject[];
+}) {
   const [filter, setFilter] = useState<FilterKey>("all");
   const [openId, setOpenId] = useState<string | null>(null);
 
@@ -124,17 +127,25 @@ export default function GalleryClient() {
                       src={p.cover}
                       alt={p.title}
                       fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-300 group-hover:scale-[1.04]"
                     />
                   ) : (
-                    <PlaceholderCover label={`${p.typeLabel.toLowerCase()} — after`} />
+                    <PlaceholderCover
+                      label={`${p.typeLabel.toLowerCase()} — after`}
+                    />
                   )}
                   <span className="absolute top-3 left-3 font-heading font-bold text-xs tracking-wider uppercase bg-[rgba(250,246,239,0.94)] text-dark py-[5px] px-[11px] rounded-md">
                     {p.typeLabel}
                   </span>
-                  {p.cover && (
+                  {p.cover && !p.isDriveGallery && (
                     <span className="absolute top-3 right-3 font-heading font-bold text-xs tracking-wider uppercase bg-orange text-white py-[5px] px-[11px] rounded-md">
                       Case Study
+                    </span>
+                  )}
+                  {p.isDriveGallery && p.driveImages && (
+                    <span className="absolute top-3 right-3 font-heading font-bold text-xs tracking-wider uppercase bg-dark text-white py-[5px] px-[11px] rounded-md">
+                      {p.driveImages.length} Photos
                     </span>
                   )}
                 </div>
@@ -196,10 +207,14 @@ function ProjectModal({
   project: p,
   onClose,
 }: {
-  project: GalleryProject;
+  project: MergedGalleryProject;
   onClose: () => void;
 }) {
-  const hasPhotos = !!p.cover;
+  const isDriveOnly = p.isDriveGallery;
+  const allPhotos = [
+    ...(p.gallery ?? []).map((src) => ({ src, isDrive: false })),
+    ...(p.driveImages ?? []).map((img) => ({ src: img.url, isDrive: true })),
+  ];
 
   return (
     <div
@@ -231,77 +246,83 @@ function ProjectModal({
         </div>
 
         <div className="p-[clamp(20px,3vw,30px)]">
-          {/* Before / After */}
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-[13px] mb-6">
-            <figure className="m-0">
-              <div className="relative aspect-[4/3] rounded-xl overflow-hidden border border-border-card bg-[repeating-linear-gradient(45deg,#C9BDA8,#C9BDA8_13px,#BCAF98_13px,#BCAF98_26px)]">
-                {p.beforeImg && (
-                  <Image
-                    src={p.beforeImg}
-                    alt="Before"
-                    fill
-                    className="object-cover"
-                  />
-                )}
-                <span className="absolute top-2.5 left-2.5 font-heading font-bold text-xs tracking-[1.3px] uppercase bg-[#6B6053] text-white py-[5px] px-[11px] rounded-md">
-                  Before
-                </span>
-              </div>
-            </figure>
-            <figure className="m-0">
-              <div className="relative aspect-[4/3] rounded-xl overflow-hidden border border-border-card bg-[repeating-linear-gradient(45deg,#ECE3D4,#ECE3D4_13px,#E4D9C6_13px,#E4D9C6_26px)]">
-                {p.afterImg && (
-                  <Image
-                    src={p.afterImg}
-                    alt="After"
-                    fill
-                    className="object-cover"
-                  />
-                )}
-                <span className="absolute top-2.5 left-2.5 font-heading font-bold text-xs tracking-[1.3px] uppercase bg-orange text-white py-[5px] px-[11px] rounded-md">
-                  After
-                </span>
-              </div>
-            </figure>
-          </div>
+          {/* Before / After — only for case study projects */}
+          {!isDriveOnly && (
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-[13px] mb-6">
+              <figure className="m-0">
+                <div className="relative aspect-[4/3] rounded-xl overflow-hidden border border-border-card bg-[repeating-linear-gradient(45deg,#C9BDA8,#C9BDA8_13px,#BCAF98_13px,#BCAF98_26px)]">
+                  {p.beforeImg && (
+                    <Image
+                      src={p.beforeImg}
+                      alt="Before"
+                      fill
+                      className="object-cover"
+                    />
+                  )}
+                  <span className="absolute top-2.5 left-2.5 font-heading font-bold text-xs tracking-[1.3px] uppercase bg-[#6B6053] text-white py-[5px] px-[11px] rounded-md">
+                    Before
+                  </span>
+                </div>
+              </figure>
+              <figure className="m-0">
+                <div className="relative aspect-[4/3] rounded-xl overflow-hidden border border-border-card bg-[repeating-linear-gradient(45deg,#ECE3D4,#ECE3D4_13px,#E4D9C6_13px,#E4D9C6_26px)]">
+                  {p.afterImg && (
+                    <Image
+                      src={p.afterImg}
+                      alt="After"
+                      fill
+                      className="object-cover"
+                    />
+                  )}
+                  <span className="absolute top-2.5 left-2.5 font-heading font-bold text-xs tracking-[1.3px] uppercase bg-orange text-white py-[5px] px-[11px] rounded-md">
+                    After
+                  </span>
+                </div>
+              </figure>
+            </div>
+          )}
 
           {/* Description */}
           <p className="text-[16.5px] leading-[1.65] text-[#3C352C] mb-[22px] [text-wrap:pretty]">
             {p.blurb}
           </p>
 
-          {/* What we did */}
-          <div className="font-heading font-bold text-[13px] tracking-[1.8px] uppercase text-text-light mb-3">
-            What we did
-          </div>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-[9px_22px] mb-[26px]">
-            {p.did.map((d) => (
-              <div
-                key={d}
-                className="flex items-start gap-2.5 text-[15.5px] text-[#3C352C]"
-              >
-                <span className="text-orange font-bold shrink-0">
-                  &#10003;
-                </span>{" "}
-                {d}
-              </div>
-            ))}
-          </div>
-
-          {/* Photo strip */}
-          {hasPhotos && p.gallery && p.gallery.length > 0 && (
+          {/* What we did — only for case study projects */}
+          {p.did.length > 0 && (
             <>
               <div className="font-heading font-bold text-[13px] tracking-[1.8px] uppercase text-text-light mb-3">
-                From the job
+                What we did
+              </div>
+              <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-[9px_22px] mb-[26px]">
+                {p.did.map((d) => (
+                  <div
+                    key={d}
+                    className="flex items-start gap-2.5 text-[15.5px] text-[#3C352C]"
+                  >
+                    <span className="text-orange font-bold shrink-0">
+                      &#10003;
+                    </span>{" "}
+                    {d}
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* Photo grid */}
+          {allPhotos.length > 0 && (
+            <>
+              <div className="font-heading font-bold text-[13px] tracking-[1.8px] uppercase text-text-light mb-3">
+                {isDriveOnly ? "Project photos" : "From the job"}
               </div>
               <div className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-2.5 mb-7">
-                {p.gallery.map((g) => (
+                {allPhotos.map((photo) => (
                   <div
-                    key={g}
+                    key={photo.src}
                     className="aspect-square rounded-[10px] overflow-hidden border border-border-card"
                   >
                     <Image
-                      src={g}
+                      src={photo.src}
                       alt="Project photo"
                       width={200}
                       height={200}
