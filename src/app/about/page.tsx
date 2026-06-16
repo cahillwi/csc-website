@@ -76,7 +76,7 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="bg-[radial-gradient(120%_150%_at_82%_0%,#FFFDF8_0%,#FAF6EF_50%,#F3EBDD_100%)] border-b border-border-light">
         <div className="max-w-[1200px] mx-auto px-7 py-[clamp(40px,5.5vw,80px)]">
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-[clamp(30px,5vw,60px)] items-center">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_340px] lg:grid-cols-[1fr_400px] gap-[clamp(30px,5vw,60px)] items-center">
             <div className="animate-csc-fade">
               <div className="inline-flex items-center gap-[9px] bg-white border border-border-header rounded-full py-[7px] px-[15px] mb-5">
                 <span className="w-2 h-2 rounded-full bg-orange" />
