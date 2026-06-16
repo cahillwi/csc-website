@@ -20,17 +20,14 @@ export default function Lightbox({
 }: LightboxProps) {
   const [currentIndex, setCurrentIndex] = useState(startIndex);
   const touchStartX = useRef<number | null>(null);
-
-  if (!images.length) return null;
-
   const total = images.length;
 
   const goNext = useCallback(() => {
-    setCurrentIndex((i) => (i + 1) % total);
+    setCurrentIndex((i) => (i + 1) % (total || 1));
   }, [total]);
 
   const goPrev = useCallback(() => {
-    setCurrentIndex((i) => (i - 1 + total) % total);
+    setCurrentIndex((i) => (i - 1 + (total || 1)) % (total || 1));
   }, [total]);
 
   useEffect(() => {
@@ -59,6 +56,8 @@ export default function Lightbox({
     }
     touchStartX.current = null;
   };
+
+  if (!total) return null;
 
   return (
     <div
