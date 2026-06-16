@@ -32,6 +32,13 @@ function getDrive() {
   return google.drive({ version: "v3", auth: apiKey });
 }
 
+function sanitizeDriveId(id: string): string {
+  if (!/^[\w-]+$/.test(id)) {
+    throw new Error(`Invalid Drive ID: ${id}`);
+  }
+  return id;
+}
+
 function driveImageUrl(fileId: string, width: number = 1200): string {
   return `https://lh3.googleusercontent.com/d/${fileId}=w${width}`;
 }
@@ -56,7 +63,7 @@ async function listSubfolders(
   folderId: string
 ): Promise<{ id: string; name: string }[]> {
   const res = await drive.files.list({
-    q: `'${folderId}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
+    q: `'${sanitizeDriveId(folderId)}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
     fields: "files(id,name)",
   });
 
@@ -70,7 +77,7 @@ async function listImageFiles(
   folderId: string
 ): Promise<DriveImage[]> {
   const res = await drive.files.list({
-    q: `'${folderId}' in parents and mimeType contains 'image/' and trashed = false`,
+    q: `'${sanitizeDriveId(folderId)}' in parents and mimeType contains 'image/' and trashed = false`,
     fields: "files(id,name,createdTime)",
     orderBy: "createdTime desc",
     pageSize: 100,
