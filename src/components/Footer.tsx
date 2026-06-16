@@ -22,6 +22,7 @@ export default function Footer() {
               width={200}
               height={50}
               className="h-[50px] w-auto"
+              style={{ width: 'auto' }}
             />
           </div>
           <p className="text-[14.5px] leading-relaxed text-text-footer max-w-[280px] mb-[18px]">
