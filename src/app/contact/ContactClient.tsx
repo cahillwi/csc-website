@@ -395,14 +395,14 @@ export default function ContactClient() {
                 Where We Work
               </div>
               <h2 className="font-heading font-extrabold text-[clamp(1.9rem,3.6vw,2.9rem)] leading-none tracking-tight uppercase text-dark">
-                Proudly serving central Connecticut
+                Proudly serving Litchfield County &amp; beyond
               </h2>
             </div>
           </div>
           <div className="relative rounded-2xl overflow-hidden border border-border-card shadow-[0_22px_44px_-30px_rgba(22,19,15,0.4)] h-[clamp(320px,42vw,470px)]">
             <iframe
-              title="Creative Space Construction service area — central Connecticut"
-              src="https://www.google.com/maps?q=Hartford%20County,%20Connecticut&z=9&output=embed"
+              title="Creative Space Construction service area — Litchfield County, Connecticut"
+              src="https://www.google.com/maps?q=Litchfield%20County,%20Connecticut&z=10&output=embed"
               className="border-0 w-full h-full block"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
