@@ -28,31 +28,6 @@ export default function Footer() {
             Building dreams one detail at a time. Owner-operated remodeling &amp;
             repair, proudly serving Connecticut homeowners.
           </p>
-          <div className="flex gap-[11px]">
-            <a
-              href="#"
-              aria-label="Facebook"
-              className="w-10 h-10 rounded-[9px] bg-footer-card border border-footer-border flex items-center justify-center font-heading font-extrabold text-[18px] text-text-footer-light hover:bg-orange hover:text-white hover:border-orange transition-colors"
-            >
-              f
-            </a>
-            <a
-              href="#"
-              aria-label="Instagram"
-              className="w-10 h-10 rounded-[9px] bg-footer-card border border-footer-border flex items-center justify-center text-text-footer-light hover:bg-orange hover:text-white hover:border-orange transition-colors"
-            >
-              <span className="w-[17px] h-[17px] border-2 border-current rounded-[5px] relative inline-block">
-                <span className="absolute top-[3px] left-[3px] w-[7px] h-[7px] border-2 border-current rounded-full" />
-              </span>
-            </a>
-            <a
-              href="#"
-              aria-label="Google Business Profile"
-              className="w-10 h-10 rounded-[9px] bg-footer-card border border-footer-border flex items-center justify-center font-heading font-extrabold text-[18px] text-text-footer-light hover:bg-orange hover:text-white hover:border-orange transition-colors"
-            >
-              G
-            </a>
-          </div>
         </div>
 
         {/* Explore links */}
