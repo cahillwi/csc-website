@@ -21,6 +21,8 @@ export default function Lightbox({
   const [currentIndex, setCurrentIndex] = useState(startIndex);
   const touchStartX = useRef<number | null>(null);
 
+  if (!images.length) return null;
+
   const total = images.length;
 
   const goNext = useCallback(() => {
@@ -33,7 +35,10 @@ export default function Lightbox({
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        e.stopImmediatePropagation();
+        onClose();
+      }
       if (e.key === "ArrowRight") goNext();
       if (e.key === "ArrowLeft") goPrev();
     };
