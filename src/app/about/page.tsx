@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import ConnecticutMap from "@/components/ConnecticutMap";
 
 export const metadata: Metadata = {
   title: "About",
@@ -9,13 +10,14 @@ export const metadata: Metadata = {
 };
 
 const towns = [
-  "West Hartford",
-  "Glastonbury",
-  "Manchester",
-  "Newington",
-  "Wethersfield",
-  "Farmington",
-  "Rocky Hill",
+  "New Milford",
+  "Kent",
+  "Sherman",
+  "Brookfield",
+  "Danbury",
+  "Torrington",
+  "Litchfield",
+  "Washington",
 ];
 
 const values = [
@@ -64,7 +66,7 @@ const credentials = [
     label: "Hometown",
     value: "Local to CT",
     valueColor: "text-white",
-    text: "Based in Connecticut and proud to work in the communities we live in.",
+    text: "Based in New Milford and proud to work across Litchfield County and beyond.",
   },
 ];
 
@@ -267,9 +269,10 @@ export default function AboutPage() {
                 Proudly serving Connecticut
               </h2>
               <p className="text-[16.5px] leading-[1.65] text-text-secondary max-w-[520px] mb-6 [text-wrap:pretty]">
-                We work with homeowners across central Connecticut and the
-                surrounding towns. Not sure if you&rsquo;re in the area? Just
-                ask &mdash; we&rsquo;re happy to let you know.
+                Based in New Milford, we work with homeowners across
+                Litchfield County and the surrounding area. Not sure if
+                you&rsquo;re in range? Just ask &mdash; we&rsquo;re happy to
+                let you know.
               </p>
               <div className="flex flex-wrap gap-[9px]">
                 {towns.map((t) => (
@@ -285,37 +288,8 @@ export default function AboutPage() {
                 </span>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                {
-                  src: "/gallery/basements/IMG_2487.JPEG",
-                  alt: "Excavation on a Connecticut basement job",
-                },
-                {
-                  src: "/gallery/basements/IMG_2614.JPEG",
-                  alt: "Newly poured concrete stairs",
-                },
-                {
-                  src: "/gallery/basements/IMG_2184.JPG",
-                  alt: "Sump pump installation",
-                },
-                {
-                  src: "/gallery/basements/IMG_1220.PNG",
-                  alt: "Finished basement floor",
-                },
-              ].map((img) => (
-                <div
-                  key={img.src}
-                  className="relative aspect-square rounded-[13px] overflow-hidden border border-border-card"
-                >
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ))}
+            <div className="bg-cream border border-border rounded-2xl p-6">
+              <ConnecticutMap />
             </div>
           </div>
         </div>
