@@ -42,7 +42,17 @@ export default function GalleryClient({
     (p) => filter === "all" || p.type === filter
   );
 
-  const active = projects.find((p) => p.id === openId) ?? null;
+
+const active = projects.find((p) => p.id === openId) ?? null;
+
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [lightboxImages, setLightboxImages] = useState<string[]>([]);
+
+  const openLightbox = useCallback((images: string[], index: number) => {
+    setLightboxImages(images);
+    setLightboxIndex(index);
+  }, []);
+
 
   const openModal = useCallback((id: string) => {
     document.body.style.overflow = "hidden";
@@ -205,7 +215,17 @@ export default function GalleryClient({
       </section>
 
       {/* Modal */}
-      {active && <ProjectModal project={active} onClose={closeModal} />}
+      {active && <ProjectModal project={active} onClose={closeModal} onOpenLightbox={openLightbox} />}
+
+      {lightboxIndex !== null && lightboxImages.length > 0 && (
+        <Lightbox
+          images={lightboxImages}
+          startIndex={lightboxIndex}
+          title={active?.title ?? ""}
+          location={active?.location ?? ""}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
     </>
   );
 }
@@ -213,16 +233,17 @@ export default function GalleryClient({
 function ProjectModal({
   project: p,
   onClose,
+  onOpenLightbox,
 }: {
   project: MergedGalleryProject;
   onClose: () => void;
+  onOpenLightbox: (images: string[], index: number) => void;
 }) {
   const isDriveOnly = p.isDriveGallery;
   const allPhotos = [
     ...(p.gallery ?? []).map((src) => ({ src, isDrive: false })),
     ...(p.driveImages ?? []).map((img) => ({ src: img.url, isDrive: true })),
   ];
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   return (
     <div
@@ -329,7 +350,7 @@ function ProjectModal({
                 {allPhotos.map((photo, i) => (
                   <button
                     key={photo.src}
-                    onClick={() => setLightboxIndex(i)}
+                    onClick={() => onOpenLightbox(allPhotos.map((photo) => photo.src), i)}
                     className="aspect-square rounded-[10px] overflow-hidden border border-border-card cursor-pointer transition-transform hover:scale-105"
                   >
                     <Image
@@ -353,15 +374,7 @@ function ProjectModal({
           </Link>
         </div>
       </div>
-      {lightboxIndex !== null && allPhotos.length > 0 && (
-        <Lightbox
-          images={allPhotos.map((photo) => photo.src)}
-          startIndex={lightboxIndex}
-          title={p.title}
-          location={p.location}
-          onClose={() => setLightboxIndex(null)}
-        />
-      )}
     </div>
+
   );
 }
