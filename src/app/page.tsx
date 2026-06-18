@@ -53,6 +53,7 @@ const services = [
     ),
     title: "Kitchen & Bath Remodels",
     desc: "Full and partial remodels — cabinets, counters, tile, fixtures, and layout.",
+    anchor: "remodels",
   },
   {
     icon: (
@@ -62,6 +63,7 @@ const services = [
     ),
     title: "Basements & Waterproofing",
     desc: "Finishing, sump pumps, French drains, moisture control, and crack repair.",
+    anchor: "basements",
   },
   {
     icon: (
@@ -75,6 +77,7 @@ const services = [
     ),
     title: "Decks & Patios",
     desc: "Custom decks, patios, and outdoor living spaces built to handle CT seasons.",
+    anchor: "decks",
   },
   {
     icon: (
@@ -85,6 +88,7 @@ const services = [
     ),
     title: "Interior Renovations",
     desc: "Flooring, drywall, painting, trim, and the finishing details that matter.",
+    anchor: "interior",
   },
   {
     icon: (
@@ -95,6 +99,7 @@ const services = [
     ),
     title: "Additions & Repairs",
     desc: "Small additions and structural repairs that add real, lasting space.",
+    anchor: "additions",
   },
   {
     icon: (
@@ -105,6 +110,7 @@ const services = [
     ),
     title: "Handyman & Repairs",
     desc: "The fix-it list you keep putting off — done right the first time.",
+    anchor: "handyman",
   },
 ];
 
@@ -301,7 +307,7 @@ export default function HomePage() {
             {services.map((s) => (
               <Link
                 key={s.title}
-                href="/services"
+                href={`/services#${s.anchor}`}
                 className="flex flex-col bg-white border border-border rounded-2xl py-7 px-7 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_18px_34px_-20px_rgba(22,19,15,0.4)] hover:border-[#E0D2BC]"
               >
                 <div className="flex items-center justify-between mb-[18px]">
