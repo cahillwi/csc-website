@@ -18,7 +18,8 @@ const categories = [
 ];
 
 type ServiceImage = {
-  label: string;
+  src: string;
+  alt: string;
   tall?: boolean;
   offset?: boolean;
   wide?: boolean;
@@ -50,9 +51,9 @@ const services: {
       "Lighting, layout & refinishing",
     ],
     images: [
-      { label: "kitchen remodel — after", tall: true },
-      { label: "bath vanity" },
-      { label: "tile detail" },
+      { src: "/services/kitchens/kitchen-remodel.jpeg", alt: "Full kitchen remodel with island and butcher block countertop", tall: true },
+      { src: "/services/kitchens/kitchen-island.jpeg", alt: "Kitchen island with pendant lighting and stainless appliances" },
+      { src: "/services/kitchens/tile-backsplash.jpeg", alt: "Herringbone tile backsplash with range hood detail" },
     ],
     reversed: false,
     bg: "bg-white",
@@ -88,8 +89,8 @@ const services: {
       "Pergolas & outdoor structures",
     ],
     images: [
-      { label: "composite deck build" },
-      { label: "paver patio", offset: true },
+      { src: "/services/decks/composite-deck.png", alt: "Composite deck installation with dark wood decking" },
+      { src: "/services/decks/wolcott-porch.jpeg", alt: "Custom covered porch steps", offset: true },
     ],
     reversed: false,
     bg: "bg-white border-t border-border-light",
@@ -108,8 +109,8 @@ const services: {
       "Crown molding & finish carpentry",
     ],
     images: [
-      { label: "new hardwood floor" },
-      { label: "trim & paint" },
+      { src: "/services/interiors/basement-bar.png", alt: "Finished basement bar with stone accent wall and floating shelves" },
+      { src: "/services/interiors/mudroom-cubbies.png", alt: "Custom mudroom cubbies with painted accent panels" },
     ],
     reversed: true,
     bg: "bg-cream border-t border-border-light",
@@ -127,7 +128,7 @@ const services: {
       "Load-bearing & framing repairs",
       "Permits handled, code-compliant",
     ],
-    images: [{ label: "home addition framing", wide: true }],
+    images: [{ src: "/services/additions-framing.png", alt: "Deck addition framing and structural work", wide: true }],
     reversed: false,
     bg: "bg-white border-t border-border-light",
   },
@@ -144,20 +145,18 @@ const services: {
       "Shelving, mounting & assembly",
       "Honey-do lists, knocked out",
     ],
-    images: [{ label: "trim & door repair", wide: true }],
+    images: [{ src: "/services/interiors/playroom-cubbies.png", alt: "Custom playroom with built-in cubbies and climbing wall", wide: true }],
     reversed: true,
     bg: "bg-cream border-t border-border-light",
   },
 ];
 
-function Placeholder({ label, className = "" }: { label: string; className?: string }) {
+function ServicePhoto({ src, alt, className = "" }: { src: string; alt: string; className?: string }) {
   return (
     <div
-      className={`relative rounded-[14px] border border-border-card bg-[repeating-linear-gradient(45deg,#ECE3D4,#ECE3D4_14px,#E4D9C6_14px,#E4D9C6_28px)] overflow-hidden flex items-end p-3.5 ${className}`}
+      className={`relative rounded-[14px] border border-border-card overflow-hidden ${className}`}
     >
-      <span className="font-mono text-[11.5px] text-white bg-[rgba(22,19,15,0.78)] py-[7px] px-3 rounded-full">
-        {label}
-      </span>
+      <Image src={src} alt={alt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
     </div>
   );
 }
@@ -339,44 +338,52 @@ export default function ServicesPage() {
                   <BeforeAfterHover />
                 ) : svc.images && svc.images.length === 3 ? (
                   <div className="grid grid-cols-[1.4fr_1fr] grid-rows-[auto_auto] gap-3.5">
-                    <Placeholder
-                      label={svc.images[0].label}
+                    <ServicePhoto
+                      src={svc.images[0].src}
+                      alt={svc.images[0].alt}
                       className="row-span-2 aspect-[3/4]"
                     />
-                    <Placeholder
-                      label={svc.images[1].label}
+                    <ServicePhoto
+                      src={svc.images[1].src}
+                      alt={svc.images[1].alt}
                       className="aspect-[4/3]"
                     />
-                    <Placeholder
-                      label={svc.images[2].label}
+                    <ServicePhoto
+                      src={svc.images[2].src}
+                      alt={svc.images[2].alt}
                       className="aspect-[4/3]"
                     />
                   </div>
                 ) : svc.images && svc.images.length === 2 && svc.images[1]?.offset ? (
                   <div className="grid grid-cols-2 gap-3.5">
-                    <Placeholder
-                      label={svc.images[0].label}
+                    <ServicePhoto
+                      src={svc.images[0].src}
+                      alt={svc.images[0].alt}
                       className="aspect-[3/4]"
                     />
-                    <Placeholder
-                      label={svc.images[1].label}
+                    <ServicePhoto
+                      src={svc.images[1].src}
+                      alt={svc.images[1].alt}
                       className="aspect-[3/4] mt-[26px]"
                     />
                   </div>
                 ) : svc.images && svc.images.length === 2 ? (
                   <div className="grid grid-cols-2 gap-3.5">
-                    <Placeholder
-                      label={svc.images[0].label}
+                    <ServicePhoto
+                      src={svc.images[0].src}
+                      alt={svc.images[0].alt}
                       className="aspect-square"
                     />
-                    <Placeholder
-                      label={svc.images[1].label}
+                    <ServicePhoto
+                      src={svc.images[1].src}
+                      alt={svc.images[1].alt}
                       className="aspect-square"
                     />
                   </div>
                 ) : svc.images && svc.images.length === 1 ? (
-                  <Placeholder
-                    label={svc.images[0].label}
+                  <ServicePhoto
+                    src={svc.images[0].src}
+                    alt={svc.images[0].alt}
                     className="aspect-[4/3]"
                   />
                 ) : null}
