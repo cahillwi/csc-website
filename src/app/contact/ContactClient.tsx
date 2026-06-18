@@ -402,10 +402,11 @@ export default function ContactClient() {
           <div className="relative rounded-2xl overflow-hidden border border-border-card shadow-[0_22px_44px_-30px_rgba(22,19,15,0.4)] h-[clamp(320px,42vw,470px)]">
             <iframe
               title="Creative Space Construction service area — Litchfield County, Connecticut"
-              src="https://www.google.com/maps?q=Litchfield%20County,%20Connecticut&z=10&output=embed"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d380000!2d-73.3!3d41.8!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e7e1a7a5cba3e7%3A0x3fcb2e3acffc5c3!2sLitchfield%20County%2C%20CT!5e0!3m2!1sen!2sus!4v1700000000000"
               className="border-0 w-full h-full block"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
             />
           </div>
         </div>
