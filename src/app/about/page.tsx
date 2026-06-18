@@ -118,6 +118,7 @@ export default function AboutPage() {
                   src="/images/dan_headshot.png"
                   alt="Owner of Creative Space Construction"
                   fill
+                  sizes="(min-width: 1024px) 440px, 100vw"
                   className="object-cover object-[center_28%]"
                   priority
                 />

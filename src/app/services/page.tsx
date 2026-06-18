@@ -171,6 +171,7 @@ function BeforeAfterHover() {
             src="/gallery/basements/IMG_2491.JPEG"
             alt="Basement during excavation"
             fill
+            sizes="(min-width: 1024px) 50vw, 100vw"
             className="object-cover"
           />
         </div>
@@ -179,6 +180,7 @@ function BeforeAfterHover() {
             src="/gallery/basements/IMG_1220.PNG"
             alt="Finished basement with poured concrete floor"
             fill
+            sizes="(min-width: 1024px) 50vw, 100vw"
             className="object-cover"
           />
         </div>
@@ -202,6 +204,7 @@ function BeforeAfterHover() {
               src="/gallery/basements/IMG_2184.JPG"
               alt="Sump pump installation"
               fill
+              sizes="(min-width: 1024px) 16vw, 33vw"
               className="object-cover"
             />
           </div>
@@ -215,6 +218,7 @@ function BeforeAfterHover() {
               src="/gallery/basements/IMG_2185.JPG"
               alt="Interior French drain"
               fill
+              sizes="(min-width: 1024px) 16vw, 33vw"
               className="object-cover"
             />
           </div>
@@ -228,6 +232,7 @@ function BeforeAfterHover() {
               src="/gallery/basements/IMG_2614.JPEG"
               alt="Poured concrete basement stairs"
               fill
+              sizes="(min-width: 1024px) 16vw, 33vw"
               className="object-cover"
             />
           </div>
