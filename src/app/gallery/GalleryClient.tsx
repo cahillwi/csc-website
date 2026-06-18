@@ -132,7 +132,7 @@ const active = projects.find((p) => p.id === openId) ?? null;
 
           {/* Grid */}
           <div className="grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] gap-[22px]">
-            {visible.map((p) => (
+            {visible.map((p, i) => (
               <button
                 key={p.id}
                 onClick={() => openModal(p.id)}
@@ -145,6 +145,7 @@ const active = projects.find((p) => p.id === openId) ?? null;
                       alt={p.title}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      priority={i < 3}
                       className="object-cover transition-transform duration-300 group-hover:scale-[1.04]"
                     />
                   ) : (
