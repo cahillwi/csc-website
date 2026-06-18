@@ -57,6 +57,7 @@ export default function Header() {
                 width={152}
                 height={38}
                 className="h-[38px] w-auto"
+                style={{ width: 'auto' }}
                 priority
               />
             </span>
