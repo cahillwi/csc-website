@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const trustItems = [
@@ -195,16 +196,22 @@ export default function HomePage() {
           {/* Hero image placeholder with before/after hover */}
           <div className="relative animate-csc-fade-delay">
             <div className="relative aspect-[4/3.2] rounded-2xl border border-border-card shadow-[0_30px_60px_-28px_rgba(22,19,15,0.45)] overflow-hidden group cursor-pointer">
-              <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,#C9BDA8,#C9BDA8_15px,#BCAF98_15px,#BCAF98_30px)] flex items-center justify-center transition-opacity duration-500 group-hover:opacity-0">
-                <span className="font-mono text-[12.5px] text-white bg-[rgba(22,19,15,0.78)] py-2 px-3.5 rounded-full text-center">
-                  unfinished basement — before photo
-                </span>
-              </div>
-              <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,#ECE3D4,#ECE3D4_15px,#E4D9C6_15px,#E4D9C6_30px)] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <span className="font-mono text-[12.5px] text-white bg-[rgba(22,19,15,0.82)] py-2 px-3.5 rounded-full text-center">
-                  finished living space — after photo
-                </span>
-              </div>
+              <Image
+                src="/gallery/basements/IMG_2491.JPEG"
+                alt="Unfinished dirt-floor basement before renovation"
+                fill
+                className="object-cover transition-opacity duration-500 group-hover:opacity-0"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+              />
+              <Image
+                src="/gallery/basements/IMG_1220.PNG"
+                alt="Finished basement with poured concrete floor after renovation"
+                fill
+                className="object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+              />
               <span className="absolute top-4 left-4 font-heading font-bold text-[14px] tracking-widest uppercase bg-[#6B6053] text-white py-1.5 px-[13px] rounded-md transition-opacity duration-400 group-hover:opacity-0 z-10">
                 Before
               </span>
