@@ -99,7 +99,14 @@ export default function ContactClient() {
     e.preventDefault();
     const errs = validate(form);
     setErrors(errs);
-    if (Object.keys(errs).length > 0) return;
+    if (Object.keys(errs).length > 0) {
+      requestAnimationFrame(() => {
+        const firstField = Object.keys(errs)[0];
+        const el = document.querySelector(`[data-field="${firstField}"]`);
+        el?.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+      return;
+    }
 
     setStatus("submitting");
     try {
@@ -161,7 +168,7 @@ export default function ContactClient() {
 
                   <form onSubmit={handleSubmit} noValidate>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-[18px_20px]">
-                      <FieldWrapper label="First name" required error={errors.firstName}>
+                      <FieldWrapper label="First name" required error={errors.firstName} field="firstName">
                         <input
                           type="text"
                           className={inputClass}
@@ -171,7 +178,7 @@ export default function ContactClient() {
                           autoComplete="given-name"
                         />
                       </FieldWrapper>
-                      <FieldWrapper label="Last name" required error={errors.lastName}>
+                      <FieldWrapper label="Last name" required error={errors.lastName} field="lastName">
                         <input
                           type="text"
                           className={inputClass}
@@ -181,7 +188,7 @@ export default function ContactClient() {
                           autoComplete="family-name"
                         />
                       </FieldWrapper>
-                      <FieldWrapper label="Email" required error={errors.email}>
+                      <FieldWrapper label="Email" required error={errors.email} field="email">
                         <input
                           type="email"
                           className={inputClass}
@@ -191,7 +198,7 @@ export default function ContactClient() {
                           autoComplete="email"
                         />
                       </FieldWrapper>
-                      <FieldWrapper label="Phone" required error={errors.phone}>
+                      <FieldWrapper label="Phone" required error={errors.phone} field="phone">
                         <input
                           type="tel"
                           className={inputClass}
@@ -419,15 +426,17 @@ function FieldWrapper({
   label,
   required,
   error,
+  field,
   children,
 }: {
   label: string;
   required?: boolean;
   error?: string;
+  field?: string;
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <div data-field={field}>
       <label className="block font-heading font-semibold text-[13px] tracking-[1.2px] uppercase text-text-muted mb-[7px]">
         {label}
         {required && <span className="text-orange"> *</span>}
