@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { fetchTestimonials } from "@/lib/google-sheets";
+
+export const revalidate = 60;
 
 const trustItems = [
   "Locally Owned & Operated",
@@ -108,28 +111,20 @@ const services = [
   },
 ];
 
-const reviews = [
-  {
-    quote:
-      "Creative Space finished our basement and it instantly became our favorite room in the house. Clean, on time, and the price was exactly what they quoted.",
-    name: "Sarah M.",
-    town: "West Hartford, CT",
-  },
-  {
-    quote:
-      "They showed up when they said they would and treated our home like it was their own. No runaround, no surprise charges. Just solid work.",
-    name: "Mike & Janet R.",
-    town: "Glastonbury, CT",
-  },
-  {
-    quote:
-      "Re-did our kitchen start to finish. They handled everything and kept us in the loop the whole way. Could not recommend them more.",
-    name: "The Coleman Family",
-    town: "Manchester, CT",
-  },
-];
+export default async function HomePage() {
+  let reviews: { quote: string; name: string; town: string; rating: number }[] = [];
+  try {
+    const testimonials = await fetchTestimonials();
+    reviews = testimonials.map((t) => ({
+      quote: t.quote,
+      name: t.name,
+      town: t.location,
+      rating: t.rating,
+    }));
+  } catch {
+    // Graceful fallback — render no testimonials
+  }
 
-export default function HomePage() {
   return (
     <>
       {/* HERO */}
@@ -325,60 +320,64 @@ export default function HomePage() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="bg-white border-t border-border-light">
-        <div className="max-w-[1200px] mx-auto px-7 py-[clamp(54px,7vw,96px)]">
-          <div className="flex flex-wrap items-end justify-between gap-[18px] mb-[clamp(32px,4vw,48px)]">
-            <div className="max-w-[560px]">
-              <div className="font-heading font-bold text-[15px] tracking-[2.6px] uppercase text-orange mb-3.5">
-                What Homeowners Say
-              </div>
-              <h2 className="font-heading font-extrabold text-[clamp(2.1rem,4vw,3.2rem)] leading-none tracking-tight uppercase text-dark">
-                Trusted across Connecticut
-              </h2>
-            </div>
-            <div className="flex items-center gap-3 bg-cream border border-border rounded-xl py-3 px-[18px]">
-              <div className="flex gap-0.5 text-orange text-[19px] tracking-wider">
-                &#9733;&#9733;&#9733;&#9733;&#9733;
-              </div>
-              <div className="leading-tight">
-                <div className="font-heading font-bold text-[17px] text-dark">
-                  5.0 Rating
+      {reviews.length > 0 && (
+        <section className="bg-white border-t border-border-light">
+          <div className="max-w-[1200px] mx-auto px-7 py-[clamp(54px,7vw,96px)]">
+            <div className="flex flex-wrap items-end justify-between gap-[18px] mb-[clamp(32px,4vw,48px)]">
+              <div className="max-w-[560px]">
+                <div className="font-heading font-bold text-[15px] tracking-[2.6px] uppercase text-orange mb-3.5">
+                  What Homeowners Say
                 </div>
-                <div className="text-[12.5px] text-text-light">
-                  on Google &middot; reviews placeholder
-                </div>
+                <h2 className="font-heading font-extrabold text-[clamp(2.1rem,4vw,3.2rem)] leading-none tracking-tight uppercase text-dark">
+                  Trusted across Connecticut
+                </h2>
               </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-[22px]">
-            {reviews.map((r) => (
-              <figure
-                key={r.name}
-                className="m-0 bg-cream border border-border rounded-2xl py-[30px] px-7 flex flex-col"
-              >
-                <div className="text-orange text-[18px] tracking-wider mb-4">
+              <div className="flex items-center gap-3 bg-cream border border-border rounded-xl py-3 px-[18px]">
+                <div className="flex gap-0.5 text-orange text-[19px] tracking-wider">
                   &#9733;&#9733;&#9733;&#9733;&#9733;
                 </div>
-                <blockquote className="m-0 mb-[22px] text-[16.5px] leading-relaxed text-[#3C352C]">
-                  &ldquo;{r.quote}&rdquo;
-                </blockquote>
-                <figcaption className="mt-auto flex items-center gap-[13px]">
-                  <div className="w-11 h-11 rounded-full bg-dark text-orange flex items-center justify-center font-heading font-extrabold text-[17px]">
-                    &#10077;
+                <div className="leading-tight">
+                  <div className="font-heading font-bold text-[17px] text-dark">
+                    5.0 Rating
                   </div>
-                  <div className="leading-tight">
-                    <div className="font-heading font-bold text-[17px] text-dark">
-                      {r.name}
+                  <div className="text-[12.5px] text-text-light">
+                    on Google &middot; reviews placeholder
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-[22px]">
+              {reviews.map((r) => (
+                <figure
+                  key={r.name}
+                  className="m-0 bg-cream border border-border rounded-2xl py-[30px] px-7 flex flex-col"
+                >
+                  <div className="text-orange text-[18px] tracking-wider mb-4">
+                    {Array.from({ length: r.rating }, (_, i) => (
+                      <span key={i}>&#9733;</span>
+                    ))}
+                  </div>
+                  <blockquote className="m-0 mb-[22px] text-[16.5px] leading-relaxed text-[#3C352C]">
+                    &ldquo;{r.quote}&rdquo;
+                  </blockquote>
+                  <figcaption className="mt-auto flex items-center gap-[13px]">
+                    <div className="w-11 h-11 rounded-full bg-dark text-orange flex items-center justify-center font-heading font-extrabold text-[17px]">
+                      &#10077;
                     </div>
-                    <div className="text-[13px] text-text-light">{r.town}</div>
-                  </div>
-                </figcaption>
-              </figure>
-            ))}
+                    <div className="leading-tight">
+                      <div className="font-heading font-bold text-[17px] text-dark">
+                        {r.name}
+                      </div>
+                      <div className="text-[13px] text-text-light">{r.town}</div>
+                    </div>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* FINAL CTA */}
       <section className="relative bg-dark overflow-hidden">
