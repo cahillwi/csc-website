@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+const hubspotPortalId = process.env.NEXT_PUBLIC_HUBSPOT_PORTAL_ID;
 
 const barlow = Barlow({
   variable: "--font-barlow",
@@ -53,6 +56,13 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
+        {hubspotPortalId && (
+          <Script
+            id="hs-script-loader"
+            src={`//js.hs-scripts.com/${hubspotPortalId}.js`}
+            strategy="afterInteractive"
+          />
+        )}
       </body>
     </html>
   );
